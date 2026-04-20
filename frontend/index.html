@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профориентационный тест — Университет «Дубна»</title>
+  <link rel="stylesheet" href="css/styles.css?v=11">
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-avatar">AI</div>
+    <div class="header-info">
+      <h1>Профориентационный тест</h1>
+      <p>Государственный университет «Дубна»</p>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle-btn" id="theme-toggle-btn" type="button" onclick="toggleTheme()" aria-label="Переключить тему" title="Переключить тему">🌙</button>
+      <div class="progress-pill" aria-label="Прогресс прохождения теста">
+        <div class="progress-pill-top">
+          <span>Прогресс</span>
+          <span id="hdr-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="hdr-progress-fill"></div></div>
+        <div class="progress-meta">Вопрос <span id="hdr-q">0</span> / 76</div>
+      </div>
+    </div>
+  </div>
+  <div class="chat-area" id="chat-area">
+    <div class="chat-inner" id="chat-inner"></div>
+  </div>
+  <div class="input-bar">
+    <div class="input-inner">
+      <div class="input-status" id="input-status">Нажмите «Начать тест»</div>
+      <button class="confirm-bar-btn" id="confirm-btn" onclick="onConfirm()" style="display:none">Далее</button>
+    </div>
+  </div>
+</div>
+
+<div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+<script src="js/data.js?v=11"></script>
+<script>
+  window.TEST_API_BASE_URL = window.TEST_API_BASE_URL || "http://localhost:8787";
+</script>
+<script src="js/app.js?v=11"></script>
+</body>
+</html>
+
+

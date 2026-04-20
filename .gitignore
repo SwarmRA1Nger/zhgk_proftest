@@ -1,0 +1,16 @@
+﻿# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Backend
+backend/node_modules/
+backend/.env
+backend/data/
+
+# Optional local artifacts
+*.pdf

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Административная статистика — Университет Дубна</title>
+  <link rel="stylesheet" href="css/stats.css?v=3">
+</head>
+<body>
+  <section class="access-shell" id="access-shell">
+    <div class="access-card">
+      <p class="eyebrow">Административный доступ</p>
+      <h1>Панель статистики профориентационного теста</h1>
+      <p class="subtitle">
+        Если на backend задан API key, введите его для просмотра статистики.
+      </p>
+
+      <label class="field-label" for="admin-key">Admin key</label>
+      <input id="admin-key" class="field" type="password" placeholder="Если ключ не задан, можно оставить пустым" />
+
+      <div class="access-actions">
+        <button id="access-btn" class="btn">Войти в панель</button>
+      </div>
+
+      <p id="access-status" class="status muted-text">Ожидание доступа</p>
+    </div>
+  </section>
+
+  <main class="dashboard is-hidden" id="dashboard">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Административная панель</p>
+        <h1>Статистика профориентационного теста</h1>
+        <p class="subtitle">Сводка по прохождениям, доставке писем, популярным направлениям и состоянию сервиса.</p>
+      </div>
+      <div class="controls">
+        <label class="field-label" for="period">Период</label>
+        <select id="period" class="field">
+          <option value="all">Все время</option>
+          <option value="7">Последние 7 дней</option>
+          <option value="30" selected>Последние 30 дней</option>
+          <option value="90">Последние 90 дней</option>
+        </select>
+
+        <div class="button-row">
+          <button id="refresh-btn" class="btn">Обновить</button>
+          <button id="logout-btn" class="btn secondary-btn" type="button">Выйти</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="cards" id="cards">
+      <article class="card">
+        <h3>Прохождения</h3>
+        <p class="metric" id="metric-total">—</p>
+      </article>
+      <article class="card">
+        <h3>Уникальные пользователи</h3>
+        <p class="metric" id="metric-unique">—</p>
+      </article>
+      <article class="card">
+        <h3>Доставка писем</h3>
+        <p class="metric" id="metric-delivery">—</p>
+      </article>
+      <article class="card">
+        <h3>Последнее прохождение</h3>
+        <p class="metric small" id="metric-last">—</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Состояние сервиса</h2>
+        <p class="panel-note">.</p>
+      </div>
+      <div class="health-grid">
+        <div class="health-item">
+          <span>API</span>
+          <strong id="health-api">Проверяется…</strong>
+        </div>
+        <div class="health-item">
+          <span>SMTP</span>
+          <strong id="health-smtp">Проверяется…</strong>
+        </div>
+        <div class="health-item">
+          <span>Доступ</span>
+          <strong id="health-access">Закрыт</strong>
+        </div>
+        <div class="health-item">
+          <span>Период</span>
+          <strong id="health-period">—</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-grid">
+      <article class="panel">
+        <h2>Топ направлений</h2>
+        <div id="top-directions" class="bars"></div>
+      </article>
+      <article class="panel">
+        <h2>RIASEC (ведущий тип)</h2>
+        <div id="top-riasec" class="bars"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Статус загрузки</h2>
+      <p id="status-line" class="status">Готов к загрузке</p>
+    </section>
+
+    <section class="panel">
+      <h2>Последние прохождения</h2>
+      <div class="table-wrap">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Топ-направление</th>
+              <th>Топ-3</th>
+              <th>RIASEC</th>
+              <th>Письмо</th>
+            </tr>
+          </thead>
+          <tbody id="events-body">
+            <tr><td colspan="5" class="muted-cell">Загрузка...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.TEST_API_BASE_URL = window.TEST_API_BASE_URL || "http://localhost:8787";
+  </script>
+  <script src="js/stats.js?v=3"></script>
+</body>
+</html>
