@@ -37,6 +37,15 @@
     return (Math.round((delivered / total) * 1000) / 10).toFixed(1) + "%";
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function buildHeaders() {
     var headers = {};
     if (state.apiKey) headers["X-API-Key"] = state.apiKey;
@@ -93,7 +102,7 @@
     body.innerHTML = "";
 
     if (!items || !items.length) {
-      body.innerHTML = '<tr><td colspan="5" class="muted-cell">Нет данных за выбранный период.</td></tr>';
+      body.innerHTML = '<tr><td colspan="6" class="muted-cell">Нет данных за выбранный период.</td></tr>';
       return;
     }
 
@@ -111,9 +120,12 @@
       var mailPill = delivered
         ? '<span class="pill ok">OK</span>'
         : '<span class="pill bad">Ошибка</span>';
+      var user = row.user || {};
+      var userCell = escapeHtml(user.name || "—") + "<br><small>" + escapeHtml(user.email || "—") + "</small>";
 
       tr.innerHTML =
         "<td>" + formatDate(row.at) + "</td>" +
+        "<td>" + userCell + "</td>" +
         "<td>" + (row.topDirection || "—") + "</td>" +
         "<td>" + (top3 || "—") + "</td>" +
         "<td>" + (row.riasecTop && row.riasecTop.key ? row.riasecTop.key + " (" + row.riasecTop.value + "%)" : "—") + "</td>" +

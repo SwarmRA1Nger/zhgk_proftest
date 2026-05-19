@@ -15,7 +15,6 @@ module.exports = {
   nodeEnv: process.env.NODE_ENV || "development",
   allowedOrigins: parseCsv(process.env.ALLOWED_ORIGINS),
   apiKeys: parseCsv(process.env.API_KEYS),
-  statsSalt: process.env.STATS_SALT || "local-dev-salt",
   smtpDnsServers: parseCsv(process.env.SMTP_DNS_SERVERS),
   smtp: {
     host: process.env.SMTP_HOST || "",

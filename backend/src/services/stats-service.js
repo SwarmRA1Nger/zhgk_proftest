@@ -1,17 +1,8 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
-const crypto = require("node:crypto");
-const config = require("../config");
 
 const DATA_DIR = path.resolve(__dirname, "../../data");
 const STATS_FILE = path.resolve(DATA_DIR, "stats.ndjson");
-
-function hashEmail(email) {
-  return crypto
-    .createHash("sha256")
-    .update(`${String(email || "").trim().toLowerCase()}|${config.statsSalt}`)
-    .digest("hex");
-}
 
 function getTopKey(obj) {
   const pairs = Object.keys(obj || {}).map((key) => ({ key, value: Number(obj[key] || 0) }));
@@ -27,10 +18,14 @@ async function appendStatRecord({ user, scored, emailMode, emailDelivered }) {
   const topRiasec = getTopKey(scored.riasec);
   const topKlimov = getTopKey(scored.klimov);
   const topStudy = getTopKey(scored.study);
+  const normalizedUser = {
+    name: String(user && user.name ? user.name : "").trim(),
+    email: String(user && user.email ? user.email : "").trim().toLowerCase()
+  };
 
   const row = {
     at: new Date().toISOString(),
-    emailHash: hashEmail(user.email),
+    user: normalizedUser,
     topDirection: scored.top3[0] ? scored.top3[0].name : null,
     top3: compactTop(scored),
     profileTop: {
@@ -130,7 +125,10 @@ async function getStatsSummary(options) {
   let lastSubmissionAt = null;
 
   rows.forEach((row) => {
-    if (row.emailHash) uniqueUsers.add(row.emailHash);
+    const userEmail = row.user && row.user.email ? String(row.user.email).trim().toLowerCase() : "";
+    if (userEmail) uniqueUsers.add(userEmail);
+    else if (row.emailHash) uniqueUsers.add(row.emailHash);
+
     if (row.topDirection) {
       directionCounts[row.topDirection] = (directionCounts[row.topDirection] || 0) + 1;
     }
@@ -179,6 +177,7 @@ async function getStatsEvents(options) {
     .map((row, index) => ({
       id: index + 1,
       at: row.at || null,
+      user: row.user || { name: "", email: "" },
       topDirection: row.topDirection || null,
       top3: Array.isArray(row.top3) ? row.top3 : [],
       riasecTop: row.profileTop && row.profileTop.riasec ? row.profileTop.riasec : { key: null, value: 0 },
