@@ -1024,7 +1024,6 @@ function initStart() {
               + '</div>'
               + '<div class="action-btns" style="margin-top:12px;">'
               + '<button class="pdf-btn" onclick="handleStartClick()">Начать тест</button>'
-              + '<button class="secondary-link-btn" id="auto-btn" type="button" onclick="autoCompleteTest()">Автозаполнение</button>'
               + '</div>'
               + '</div>'
               + '</div>';
